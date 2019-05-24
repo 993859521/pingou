@@ -1,0 +1,54 @@
+<!--index.wxml-->
+<scroll-view scroll-y="true" class="container" bindscrolltoupper="upper" upper-threshold="10" lower-threshold="5" bindscrolltolower="lower"  scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+  <view class="search flex-wrp">
+      <view class="search-left flex-item">
+          <image src="../../../images/search-pic.png"></image>
+          <input placeholder="搜索话题, 问题或人" placeholder-class="search-placeholder" bindinput ="SearchInput"/>
+      </view>
+      <view class="search-right flex-item">
+          <button class='search-btn' bindtap="toSearch">搜索</button>
+      </view>
+  </view>
+    <view class="type-container">
+    <scroll-view class="type-navbar" scroll-x="true">
+      <view class="type-box" wx:for-items="{{tlist}}" wx:key="id">
+        <view id="{{item.id}}" class="type-navbar-item {{activeCategoryId == item.id ? 'type-item-on' : ''}} "bindtap='typecheck' >
+          {{item.name}}
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+    <block wx:for="{{goods}}" wx:for-index="idx" wx:for-item="item" data-idx="{{idx}}">
+        <view class="feed-item">
+            <view class="feed-source" bindtap="bindItemTap" data-id="{{item.answer_id}}" data-images="{{item.images}}" data-title="{{item.title}}" data-context="{{item.context}}" data-lcnum="{{item.lcnum}}"data-name="{{item.feed_source_name}}" data-list="{{item.images_list}}">
+                <a class="">
+                    <view class="avatar">
+                        <image src="{{item.images}}"></image>
+                    </view>
+                    <text>{{item.feed_source_name}}</text>
+                </a>
+                <image class="item-more" mode="aspectFit" src="../../../images/more.png"></image>
+            </view>
+            <view class="feed-content" bindtap="bindItemTap" data-id="{{item.answer_id}}" data-images="{{item.images}}" data-title="{{item.title}}" data-context="{{item.context}}" data-lcnum="{{item.lcnum}}"data-name="{{item.feed_source_name}}" data-list="{{item.images_list}}">
+                <view class="question" qid="{{question_id}}" bindtap="bindQueTap">
+                    <a class="question-link">
+                        <text>{{item.title}}</text>
+                    </a>
+                </view>
+                <view class="answer-body">
+                    <view bindtap="bindItemTap" data-id="{{item.answer_id}}" data-images="{{item.images}}" data-title="{{item.title}}" data-context="{{item.context}}" data-lcnum="{{item.lcnum}}"data-name="{{item.feed_source_name}}" data-list="{{item.images_list}}">
+                        <text class="answer-txt" aid="{{item.answer_id}}">{{item.context}}</text>
+                    </view>
+                   
+                </view>
+            </view>
+             
+        </view>
+         
+    </block>
+    
+
+
+    <view hidden="{{loadingMoreHidden ? true : false}}" class="no-more-goods">已经到底了</view>
+</scroll-view>
+

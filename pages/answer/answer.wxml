@@ -1,0 +1,57 @@
+<!--answer.wxml-->
+<scroll-view scroll-y="true" class="container" bindscrolltoupper="upper" upper-threshold="10" lower-threshold="5" bindscrolltolower="lower"  scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+    <view class="question" bindtap="toQuestion">
+        <text class="question-title">{{title}}</text>
+    </view>
+    <view class="answerer-wrp">
+        <view class="bg-half"></view>
+        <view class="answerer flex-wrp">
+            <view class="avatar flex-item">
+                <image src="{{images}}"></image>
+            </view>
+            <view class="answerer-info flex-item">
+                <text class="answerer-name">{{name}}</text>
+            </view>
+        </view>
+    </view>
+    <view class="answer-content">
+        <text>{{context}}</text>
+        <view wx:for="{{images_list}}">
+
+        <image src="{{ item.images }}" bindload="imageLoad" data-index="{{ index }}" 
+style="width:{{ image[index].width }}rpx; height:{{ image[index].height }}rpx;"></image>
+        </view>
+    </view>
+
+    <block wx:for="{{goods}}" wx:for-index="idx" wx:for-item="item" data-idx="{{idx}}">
+        <view class="feed-item">
+            <view class="feed-source">
+                <a class="">
+                    <view class="avatar">
+                        <image src="{{item.images}}"></image>
+                    </view>
+                    <text>{{item.feed_source_name}}</text>
+                </a>
+                <image class="item-more" mode="aspectFit" src="../../../images/more.png"></image>
+            </view>
+            <view class="answer-content">
+                <view class="answer-body">
+                      <text class="answer-txt">{{item.context}}</text> 
+                 </view>
+                </view>
+                
+            </view>
+
+    </block>
+       
+<text>\n\n\n\n\n</text>
+
+    <view class="sendmessage">
+    <textarea class='text'  bindinput="bindChange" placeholder="" auto-height="true" maxlength='200'/>
+  <button bindtap="add">发送</button>
+  <text>\n</text>
+</view>
+
+    </scroll-view>
+
+

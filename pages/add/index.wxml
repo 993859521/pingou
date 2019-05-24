@@ -1,0 +1,32 @@
+<view class='page'>
+
+       <view class="inputView">
+
+          <input placeholder="标题" style="border:10px" bindinput ="titleInput" focus="{{true}}"/>
+      </view>
+  <text>\n</text>
+  <textarea class='text'  bindinput="input" placeholder="发布内容" maxlength="6000" style='border: 1px solid #d0d0d0;'/>
+
+
+
+  <view class="image_content">
+    <view class='imag' wx:for="{{img_url}}">
+      <image class="moment_img" src="{{item}}" data-index="{{index}}" mode="aspectFill" bindtap="previewImg"></image>
+      <view class="delete-btn" data-index="{{index}}" catchtap="deleteImg">删除</view>
+    </view>
+    <view class='imag' style='display:{{hideAdd?"none":"block"}}'>
+      <image bindtap="chooseimage" class="moment_img" src='../../images/add.jpg'></image>
+    </view>
+  </view>
+      <view class="type-container">
+    <scroll-view class="type-navbar" scroll-x="true">
+      <view class="type-box" wx:for-items="{{tlist}}" wx:key="id">
+        <view id="{{item.id}}" class="type-navbar-item {{activeCategoryId == item.id ? 'type-item-on' : ''}} "bindtap='typecheck' >
+          {{item.name}}
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+    <text>\n</text>
+  <button bindtap="send" style='margin-right:5px;margin-left:5px;background-color:#ca0c16;'>发布</button>
+</view>
