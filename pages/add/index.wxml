@@ -1,7 +1,5 @@
 <view class='page'>
-
        <view class="inputView">
-
           <input placeholder="标题" style="border:10px" bindinput ="titleInput" focus="{{true}}"/>
       </view>
   <text>\n</text>

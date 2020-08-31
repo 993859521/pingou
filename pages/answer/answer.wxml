@@ -39,19 +39,17 @@ style="width:{{ image[index].width }}rpx; height:{{ image[index].height }}rpx;">
                       <text class="answer-txt">{{item.context}}</text> 
                  </view>
                 </view>
-                
             </view>
-
-    </block>
-       
+    </block> 
 <text>\n\n\n\n\n</text>
+</scroll-view>
 
-    <view class="sendmessage">
-    <textarea class='text'  bindinput="bindChange" placeholder="" auto-height="true" maxlength='200'/>
-  <button bindtap="add">发送</button>
-  <text>\n</text>
-</view>
-
-    </scroll-view>
-
-
+  <view class="release">
+    <view  wx:if="{{reply}}" class="replyinfo1">
+      回复<text class="text">{{replyUserName}}</text>
+    </view>
+    <view class="replyinfo2">
+      <textarea placeholder-class="input_null" fixed="true" maxlength="-1" show-confirm-bar="false" cursor-spacing="15" auto-height="true" placeholder="请输入回复" name="comment" bindinput ="bindChange" value= '{{num2}}'></textarea>
+      <button form-type="submit" class="submit" bindtap="add">发送</button>
+    </view>
+  </view>

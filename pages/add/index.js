@@ -4,7 +4,6 @@ Page({
     img_url: [],
     context: '',
     titleInput: '',
-    id:app.msg.id,
     img_url_ok:'',
     tlist:[],
     activeCategoryId: 0,
@@ -55,10 +54,38 @@ Page({
           for (let i = 0; i < res.tempFilePaths.length; i++) {
             img_url.push(res.tempFilePaths[i])
           }
+
           that.setData({
             img_url: img_url
           })
-
+          wx.showLoading({
+            title: '上传中',
+          })
+          for (let i = 0; i < img_url.length; i++) {
+            console.log("images----" + img_url[i]);
+            wx.uploadFile({
+              //路径填你上传图片方法的地址
+              url: app.buildUrl('api/picture/index'),
+              filePath: img_url[i],
+              name: 'file',
+              formData: {
+                'user': 'test'
+              },
+              success: function (res) {
+                that.setData({
+                  img_url_ok: that.data.img_url_ok + app.buildUrl('') + res.data + "#"
+                })
+                var n = that.data.img_url_ok.split("#")
+                if(n.length - 1 == that.data.img_url.length){
+                  wx.hideLoading()
+                  wx.showModal({
+                    title: '上传成功',
+                    showCancel: false,
+                  })
+                }
+              },
+            })
+          }
         }
 
       }
@@ -86,66 +113,38 @@ Page({
     });
       return
     }
-    var user_id = wx.getStorageSync('userid')
     wx.showLoading({
-      title: '上传中',
+      title: '提交中',
     })
     that.img_upload()
   },
   //图片上传
   img_upload: function () {
     let that = this;
-    let img_url = that.data.img_url;
-    //由于图片只能一张一张地上传，所以用循环
-    for (let i = 0; i < img_url.length; i++) {
-      console.log("images----"+img_url[i]);
-      wx.uploadFile({
-        //路径填你上传图片方法的地址
-        url: app.buildUrl('api/picture/index'),
-        filePath: img_url[i],
-        name: 'file',
-        formData: {
-          'user': 'test'
-        },
-        success: function (res) {
-          console.log('上传成功');
-          //把上传成功的图片的地址放入数组中
-          that.setData({
-            img_url_ok: that.data.img_url_ok + app.buildUrl('') + res.data + "#"
+    wx.request({
+      url: app.buildUrl('api/tiezi/add'),
+      header: app.getRequestHeader(),
+      method: 'POST',
+
+      data: {
+        title: that.data.titleInput,
+        type: that.data.activeCategoryId,
+        context: that.data.context,
+        images: that.data.img_url_ok,
+        id: app.msg.id,
+      },
+      success: function (res) {
+        console.info(res.code)
+        if (res.data.code == 200) {
+          wx.hideLoading()
+          wx.showModal({
+            title: '提交成功',
+            showCancel: false,
+
           })
-
-          //如果全部传完，则可以将图片路径保存到数据库
-          var n = that.data.img_url_ok.split("#")
-          console.info(n.length)
-          if (n.length - 1 == that.data.img_url.length || that.data.img_url.length==0) {
-            wx.request({
-              url: app.buildUrl('api/tiezi/add'),
-              header: app.getRequestHeader(),
-              method: 'POST',
-
-              data: {
-                title: that.data.titleInput,
-                type: that.data.activeCategoryId,
-                context: that.data.context,
-                images: that.data.img_url_ok,
-                id: that.data.id,
-              },
-              success: function (res) {
-                console.info(res.code)
-                if (res.data.code == 200) {
-                  wx.hideLoading()
-                  wx.showModal({
-                    title: '提交成功',
-                    showCancel: false,
-
-                  })
-                }
-              }
-            })
-          }
-        },
-      })
-    }
+        }
+      }
+    })
   },
   previewImg(e) {
     var that = this;

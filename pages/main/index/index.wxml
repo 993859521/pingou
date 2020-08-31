@@ -1,12 +1,26 @@
 <!--index.wxml-->
+<view class="container">
+  <!--轮播图-->
+  <view class="swiper-container">
+    <swiper class="swiper_box" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" bindchange="swiperchange">
+      <block wx:for="{{banners}}" wx:key="id">
+        <swiper-item>
+          <image bindtap="tapBanner" data-id="{{item.id}}" src="{{item.pic_url}}" class="slide-image" width="750rpx" height="562.5rpx" />
+        </swiper-item>
+      </block>
+    </swiper>
+    <view class="dots">
+      <block wx:for="{{banners}}" wx:key="unique">
+        <view class="dot{{index == swiperCurrent ? ' active' : ''}}"></view>
+      </block>
+    </view>
+  </view>
+   </view>
 <scroll-view scroll-y="true" class="container" bindscrolltoupper="upper" upper-threshold="10" lower-threshold="5" bindscrolltolower="lower"  scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
   <view class="search flex-wrp">
       <view class="search-left flex-item">
           <image src="../../../images/search-pic.png"></image>
           <input placeholder="搜索话题, 问题或人" placeholder-class="search-placeholder" bindinput ="SearchInput"/>
-      </view>
-      <view class="search-right flex-item">
-          <button class='search-btn' bindtap="toSearch">搜索</button>
       </view>
   </view>
     <view class="type-container">
@@ -29,8 +43,8 @@
                 </a>
                 <image class="item-more" mode="aspectFit" src="../../../images/more.png"></image>
             </view>
-            <view class="feed-content" bindtap="bindItemTap" data-id="{{item.answer_id}}" data-images="{{item.images}}" data-title="{{item.title}}" data-context="{{item.context}}" data-lcnum="{{item.lcnum}}"data-name="{{item.feed_source_name}}" data-list="{{item.images_list}}">
-                <view class="question" qid="{{question_id}}" bindtap="bindQueTap">
+            <view class="feed-content">
+                <view class="question" qid="{{question_id}}" bindtap="bindItemTap" data-id="{{item.answer_id}}" data-images="{{item.images}}" data-title="{{item.title}}" data-context="{{item.context}}" data-lcnum="{{item.lcnum}}"data-name="{{item.feed_source_name}}" data-list="{{item.images_list}}">
                     <a class="question-link">
                         <text>{{item.title}}</text>
                     </a>

@@ -14,13 +14,24 @@ Page({
     goods:[],
     images_list:[],
     image: {},
-    message:''
+    message:'',
+    num2:'',
   },
   bindChange: function (e) {
     this.data.message = e.detail.value
   },
   add:function(e){
+
     var that = this;
+    if (that.data.message==''){
+      app.alert({
+        'content': '请输入内容~~'
+      });
+      return
+    }
+    wx.showLoading({
+      title: '提交中',
+    })
     wx.request({
       url: app.buildUrl('api/louceng/add'),
       header: app.getRequestHeader(),
@@ -37,6 +48,12 @@ Page({
 
           return;
         }
+        wx.hideLoading()
+        wx.showModal({
+          title: '提交成功',
+          showCancel: false,
+
+        })
         var goods={
           feed_source_name:app.msg.nickname,
           tieziid: that.data.id,
@@ -46,6 +63,7 @@ Page({
         }
         that.setData({
           goods: that.data.goods.concat(goods),
+          num2:'',
         });
       }
     });

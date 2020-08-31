@@ -14,12 +14,32 @@ Page({
     activeCategoryId: 0,
     one:0,
     searchInput:'',
+    swiperCurrent: 0,
+    banners:[
+     { 
+       id:1,
+        pic_url: "https://www.able.ac.cn/static/images/upload/2019052414571231.jpg"
+      },
+      {
+        id: 2,
+        pic_url: "https://www.able.ac.cn/static/images/upload/2019052414571236.jpg"
+      },
+      {
+        id: 3,
+        pic_url: "https://www.able.ac.cn/static/images/upload/2019052414571270.jpg"
+      }
+    ]
   },
   bindItemTap: function (e) {
     wx.navigateTo({
       url: '../../answer/answer?id=' + e.currentTarget.dataset.id + "&name=" + e.currentTarget.dataset.name + "&images=" + e.currentTarget.dataset.images + "&title=" + e.currentTarget.dataset.title + "&context=" + e.currentTarget.dataset.context + "&lcnum=" + e.currentTarget.dataset.lcnum 
     })
     app.images_list = e.currentTarget.dataset.list
+  },
+  swiperchange: function (e) {
+    this.setData({
+      swiperCurrent: e.detail.current
+    })
   },
   //事件处理函数
   SearchTiezi: function (type,e) {
@@ -76,7 +96,13 @@ Page({
     this.setData({
       searchInput: e.detail.value
     })
-    console.info(this.data.searchInput)
+    this.setData({
+      p: 1,
+      goods: [],
+      loadingMoreHidden: true,
+      searchInput: this.data.searchInput
+    });
+    this.SearchTiezi();
   },
   lower: function (e) {
     wx.showNavigationBarLoading();
@@ -85,6 +111,14 @@ Page({
     this.SearchTiezi()
     console.log("lower")
    
+  },
+  upper: function (e) {
+    wx.showNavigationBarLoading();
+    var that = this;
+    setTimeout(function () { wx.hideNavigationBarLoading(); }, 1000);
+    this.SearchTiezi()
+
+
   },
   typecheck: function (e) {
     this.setData({
@@ -96,14 +130,5 @@ Page({
       searchInput:''
     });
     this.SearchTiezi()
-  },
-  toSearch: function (e) {
-    this.setData({
-      p: 1,
-      goods: [],
-      loadingMoreHidden: true,
-      searchInput: this.data.searchInput
-    });
-    this.SearchTiezi();
   },
 });

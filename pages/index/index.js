@@ -113,7 +113,10 @@ Page({
               });
               return;
             }
+            var resp = res.data;
             app.setCache("token", res.data.data.token);
+            var msg = resp.data.list;
+            app.msg = msg;
             that.goToIndex();
           }
         });
